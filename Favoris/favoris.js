@@ -52,12 +52,14 @@ router.post('/favoris', auth, async(req, res) => {
         }
 
         // Ajouter un nouvel article aux favoris
-        const result = await User.findOneAndUpdate({
-            _id: user._id,
-            $set: {
+        const result = await User.findOneAndUpdate(
+            {_id: user._id},
+            {$set: {
                 favorites: [...user.favorites, { articleId: id, iscomics: iscomics }]
-            }
-        });
+                }
+            },
+            {new: true}
+        );
 
         result.save();
         return res.status(200).json(result);  // Retourner les favoris mis à jour
